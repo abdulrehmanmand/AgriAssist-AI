@@ -5,24 +5,9 @@ from PIL import Image
 # 1. Page Configuration
 st.set_page_config(page_title="AgriAssist: Farm AI", page_icon="🌾", layout="centered")
 
-# 2. Sleek Top Header Layout
-col1, col2 = st.columns([3, 1])
-
-with col1:
-    st.title("🌾 AgriAssist")
-with col2:
-    st.write("") # Adds a tiny bit of spacing to align with the title
-    # Clean, global language dropdown at the top right
-    language = st.selectbox(
-        "Language", 
-        ["English", "Urdu (اردو)"],
-        label_visibility="collapsed" # Hides the text label for a cleaner look
-    )
-
+# 2. Header
+st.title("🌾 AgriAssist")
 st.write("Smart Farm Planning, Seed Explorer & Disease AI")
-
-# Secretly attach the selected language to every AI prompt
-lang_prompt = f"Please provide the entire response in {language}."
 
 # 3. API Key Handling (Checks Secrets first, then sidebar)
 api_key = None
@@ -59,14 +44,22 @@ with tab1:
     with col_b:
         sow_date = st.date_input("Planned Sowing Date:")
         
-    if st.button("Check Date & Generate Plan"):
+    st.write("---") # Adds a clean visual divider
+    col_btn1, col_lang1 = st.columns(2)
+    with col_lang1:
+        lang1 = st.selectbox("AI Output Language:", ["English", "Urdu (اردو)"], key="lang_t1")
+    with col_btn1:
+        st.write("") # Spacing alignment
+        btn1 = st.button("Check Date & Generate Plan")
+        
+    if btn1:
         with st.spinner("Analyzing weather, seeds, and fertilizer needs..."):
             prompt = f"""
             I am a farmer in {region} planning to sow {crop} on {sow_date}. 
             1. Analyze the typical weather and monsoon conditions for this exact date. Is it a safe and optimal time to sow?
             2. If yes, what specific seed varieties are most appropriate for this date and weather? (If no, suggest a better date).
             3. Provide a tailored fertilizer plan specifically for the recommended seeds.
-            {lang_prompt}
+            Please provide the entire response in {lang1}.
             """
             response = client.models.generate_content(model=MODEL_ID, contents=prompt)
             st.success("Plan Generated!")
@@ -81,12 +74,20 @@ with tab2:
     if explore_crop == "Other":
         explore_crop = st.text_input("Type the crop name:")
         
-    if st.button("Explore Seeds"):
+    st.write("---")
+    col_btn2, col_lang2 = st.columns(2)
+    with col_lang2:
+        lang2 = st.selectbox("AI Output Language:", ["English", "Urdu (اردو)"], key="lang_t2")
+    with col_btn2:
+        st.write("")
+        btn2 = st.button("Explore Seeds")
+        
+    if btn2:
         with st.spinner("Fetching seed database..."):
             prompt = f"""
             Provide a comprehensive guide on the best modern seed varieties available for {explore_crop}. 
             Include their characteristics, drought/pest resistance, maturity duration, and expected yield potential.
-            {lang_prompt}
+            Please provide the entire response in {lang2}.
             """
             response = client.models.generate_content(model=MODEL_ID, contents=prompt)
             st.write(response.text)
@@ -98,11 +99,19 @@ with tab3:
     soil_type = st.selectbox("Soil Condition:", ["Clay", "Sandy", "Loam", "Silt", "Peat"])
     fertilizer = st.text_input("Current fertilizers:")
     
-    if st.button("Optimize Yield"):
+    st.write("---")
+    col_btn3, col_lang3 = st.columns(2)
+    with col_lang3:
+        lang3 = st.selectbox("AI Output Language:", ["English", "Urdu (اردو)"], key="lang_t3")
+    with col_btn3:
+        st.write("")
+        btn3 = st.button("Optimize Yield")
+        
+    if btn3:
         with st.spinner("Calculating strategy..."):
             prompt = f"""
             Growing {yield_crop} in {soil_type} soil using {fertilizer}. Give a step-by-step plan to maximize final crop yield, including irrigation and fertilizer adjustments.
-            {lang_prompt}
+            Please provide the entire response in {lang3}.
             """
             response = client.models.generate_content(model=MODEL_ID, contents=prompt)
             st.success("Optimization Ready!")
@@ -117,11 +126,19 @@ with tab4:
         image = Image.open(uploaded_file)
         st.image(image, caption="Uploaded Image", use_container_width=True)
         
-        if st.button("Scan for Disease"):
+        st.write("---")
+        col_btn4, col_lang4 = st.columns(2)
+        with col_lang4:
+            lang4 = st.selectbox("AI Output Language:", ["English", "Urdu (اردو)"], key="lang_t4")
+        with col_btn4:
+            st.write("")
+            btn4 = st.button("Scan for Disease")
+        
+        if btn4:
             with st.spinner("Analyzing image..."):
                 prompt = f"""
                 Identify any visible plant disease, pest damage, or deficiency in this leaf photo and give a 3-step action plan for treatment.
-                {lang_prompt}
+                Please provide the entire response in {lang4}.
                 """
                 response = client.models.generate_content(model=MODEL_ID, contents=[prompt, image])
                 st.success("Analysis Complete!")
