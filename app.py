@@ -46,7 +46,7 @@ with tab1:
     st.write("---")
     col_btn1, col_lang1 = st.columns(2)
     with col_lang1:
-        lang1 = st.selectbox("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t1")
+        lang1 = st.radio("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t1", horizontal=True)
     with col_btn1:
         st.write("")
         btn1 = st.button("Check Date & Generate Plan", key="b_1")
@@ -62,7 +62,6 @@ with tab1:
             Please provide the entire response in {lang1}.
             """
             response = client.models.generate_content(model=MODEL_ID, contents=prompt)
-            # Save to memory for chat
             st.session_state.chat_t1 = [("assistant", response.text)]
             st.session_state.ctx_t1 = prompt 
             
@@ -78,7 +77,6 @@ with tab1:
             st.session_state.chat_t1.append(("user", follow_up1))
             
             with st.spinner("Thinking..."):
-                # Compile history so the AI remembers the context
                 hist_text = f"Original Context: {st.session_state.ctx_t1}\n"
                 for r, m in st.session_state.chat_t1: hist_text += f"{r.upper()}: {m}\n"
                 hist_text += f"Answer the user's latest question in {lang1}."
@@ -99,7 +97,7 @@ with tab2:
     st.write("---")
     col_btn2, col_lang2 = st.columns(2)
     with col_lang2:
-        lang2 = st.selectbox("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t2")
+        lang2 = st.radio("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t2", horizontal=True)
     with col_btn2:
         st.write("")
         btn2 = st.button("Explore Seeds", key="b_2")
@@ -143,7 +141,7 @@ with tab3:
     st.write("---")
     col_btn3, col_lang3 = st.columns(2)
     with col_lang3:
-        lang3 = st.selectbox("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t3")
+        lang3 = st.radio("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t3", horizontal=True)
     with col_btn3:
         st.write("")
         btn3 = st.button("Optimize Yield", key="b_3")
@@ -188,7 +186,7 @@ with tab4:
         st.write("---")
         col_btn4, col_lang4 = st.columns(2)
         with col_lang4:
-            lang4 = st.selectbox("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t4")
+            lang4 = st.radio("Select Output Language:", options=["English", "Urdu (اردو)"], index=0, key="lang_t4", horizontal=True)
         with col_btn4:
             st.write("")
             btn4 = st.button("Scan for Disease", key="b_4")
@@ -201,7 +199,6 @@ with tab4:
                 """
                 response = client.models.generate_content(model=MODEL_ID, contents=[prompt, image])
                 
-                # Save text history AND the image to memory so AI can "see" it during chat
                 st.session_state.chat_t4 = [("assistant", response.text)]
                 st.session_state.ctx_t4 = prompt
                 st.session_state.saved_img = image 
@@ -220,7 +217,6 @@ with tab4:
                     for r, m in st.session_state.chat_t4: hist_text += f"{r.upper()}: {m}\n"
                     hist_text += f"Answer the user's latest question about the uploaded image in {lang4}."
                     
-                    # Pass both the chat history AND the saved image back to the AI
                     res = client.models.generate_content(
                         model=MODEL_ID, 
                         contents=[hist_text, st.session_state.saved_img]
