@@ -35,5 +35,5 @@ If you wish to run this application locally, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/YourUsername/AgriAssist-AI.git](https://github.com/YourUsername/AgriAssist-AI.git)
+   git clone [https://github.com/abdulrehmanmand/AgriAssist-AI.git](https://github.com/abdulrehmanmand/AgriAssist-AI.git)
    cd AgriAssist-AI
