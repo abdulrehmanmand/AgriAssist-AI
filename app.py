@@ -38,7 +38,7 @@ with tab1:
             prompt = f"I am a farmer in {region} planting {crop}. Heavy monsoons start {monsoon_date}. When is the exact optimal time to sow seeds to prevent washout, and what soil prep is needed?"
             
             response = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-3.5-flash",
                 contents=prompt
             )
             st.success("Plan Generated!")
@@ -56,7 +56,7 @@ with tab2:
             prompt = f"Growing {yield_crop} in {soil_type} soil using {fertilizer}. Give a step-by-step plan to maximize final crop yield, including irrigation and fertilizer adjustments."
             
             response = client.models.generate_content(
-                model="gemini-2.5-flash",
+                model="gemini-3.5-flash",
                 contents=prompt
             )
             st.success("Optimization Ready!")
@@ -75,7 +75,7 @@ with tab3:
             with st.spinner("Analyzing image..."):
                 prompt = "Identify any visible plant disease, pest damage, or deficiency in this leaf photo and give a 3-step action plan for treatment."
                 response = client.models.generate_content(
-                    model="gemini-2.5-flash",
+                    model="gemini-3.5-flash",
                     contents=[prompt, image]
                 )
                 st.success("Analysis Complete!")
